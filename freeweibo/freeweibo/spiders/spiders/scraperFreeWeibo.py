@@ -45,8 +45,8 @@ class FreeWeiboSpider(scrapy.Spider):
 			items['time_created'] = time_created
 			items['freeweiboOGpostlink'] = Selector(text=created).xpath(".//a/@href").get()
 			items['content'] = Selector(text=text).xpath("normalize-space()").get()
-			items['hastags'] = Selector(text=text).xpath(".//a/text()")[1:].getall()
-			items['hastagsurls'] = Selector(text=text).xpath(".//a/@href")[1:].getall()
+			items['hashtags'] = Selector(text=text).xpath(".//a/text()")[1:].getall()
+			items['hashtagsurls'] = Selector(text=text).xpath(".//a/@href")[1:].getall()
 			items['timestampscrapped'] = timestamp
 			yield items
 
