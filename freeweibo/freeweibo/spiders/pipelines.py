@@ -16,8 +16,8 @@ class FreeweiboPipeline(object):
     def create_connection(self):
         self.conn = mysql.connector.connect(
             host = 'localhost',
-            user = 'root',
-            passwd = 'Itagui22388!',
+            user = 'admin',
+            passwd = 'freeweibo2021',
             database = 'FreeWeiboPosts'
             )
         self.curr = self.conn.cursor()
