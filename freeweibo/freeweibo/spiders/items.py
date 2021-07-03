@@ -29,6 +29,6 @@ class FreeweiboItem(scrapy.Item):
     time_created = scrapy.Field()
     freeweiboOGpostlink = scrapy.Field()
     content = scrapy.Field()
-    hastags = scrapy.Field()
-    hastagsurls = scrapy.Field()
+    hashtags = scrapy.Field()
+    hashtagsurls = scrapy.Field()
     timestampscrapped = scrapy.Field()
