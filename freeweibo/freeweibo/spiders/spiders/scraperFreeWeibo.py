@@ -1,46 +1,54 @@
+#This program is scraping information from 'https://freeweibo.com/get-from-cache.php?q='. 
+#This page contains more data in json format. 
+#Spider will parse through each post and scrape the data. 
+
 import scrapy
+import json
+import datetime
 from ..items import FreeweiboItem
+from scrapy import Selector
 
 
 class FreeWeiboSpider(scrapy.Spider):
-	#
+
 	name = "freeweibo"
 	allowed_domains = ['freeweibo.com']
-	start_urls = ['https://freeweibo.com/en/weibo']
+	start_urls = ['https://freeweibo.com/get-from-cache.php?q=']
 
 	def parse(self, response):
 
 		items = FreeweiboItem()
-		banned_posts = response.xpath(".//div[@class='message censored-1 deleted-0']")
-		for post in banned_posts:
-			username = post.xpath(".//div[@class='content']/a/text()")
-			usernamelink = post.xpath(".//div[@class='content']/a/@href")
-			hashtags = post.xpath(".//div[@class='content']/a/text()")
-			hashtagslinks = post.xpath(".//div[@class='content']/a/@href")
-			content = post.xpath("normalize-space(.//div[@class='content'])")
-			#content = banned_posts.xpath(".//div[@class='content']/text()")
-			date = 	post.xpath(".//div[@class='date']/a/text()")
-			censored = post.xpath(".//span[@class='censored']/text()")
-			now = datetime.now()
+		raw_json = response.body
+		jsonresponse = json.loads(response.body)
+		data = jsonresponse["messages"]
 
-			items['username'] = username.extract_first()
-			items['usernamelink'] = usernamelink.extract_first()
-			items['hashtags'] = hashtags[1:].extract()
-			items['hashtagslinks'] = hashtagslinks[1:].extract()
-			items['content'] = content.extract()
-			items['date'] = date.extract()
-			items['censored'] = censored.extract()
-			items['now'] = now
+		for i in data.keys():
+			user_name = data[i]['user_name']
+			post_id = data[i]['id']
+			created = data[i]['created_at']
+			reposts_count = data[i]['reposts_count']
+			censored = data[i]['censored']
+			deleted = data[i]['deleted']
+			contains_adult_keyword = data[i]['contains_adult_keyword']
+			contains_censored_keyword = data[i]['contains_censored_keyword']
+			time_created = data[i]['created_at_raw']
+			text = data[i]['text']
+			timestamp = datetime.datetime.now()
+
+			items['username'] = user_name
+			items['postid'] = post_id
+			items['repostscount'] = reposts_count
+			items['censored'] = censored
+			items['deleted'] = deleted
+			items['contains_adult_keyword'] = contains_adult_keyword
+			items['contains_censored_keyword'] = contains_censored_keyword
+			items['time_created'] = time_created
+			items['freeweiboOGpostlink'] = Selector(text=created).xpath(".//a/@href").get()
+			items['content'] = Selector(text=text).xpath("normalize-space()").get()
+			items['hastags'] = Selector(text=text).xpath(".//a/text()")[1:].getall()
+			items['hastagsurls'] = Selector(text=text).xpath(".//a/@href")[1:].getall()
+			items['timestampscrapped'] = timestamp
 			yield items
-			
-		# This will follow each link contained inside the content of each post
-		#for next_link in response.xpath(".//div[@class='content']/a/@href"):
-		 	#yield response.follow(next_link, self.parse)
-		# This will get each link in the hot search ordered list	
-		#for next_term in response.xpath(".//div[@id='right']/ol/li/a"):
-			#yield response.follow(next_term, self.parse)
-		# This will follow view older messages
-		for next_link in response.xpath(".//div[@id='load-older']/a/@href"):
-			yield response.follow(next_link, self.parse)
+
 
 
