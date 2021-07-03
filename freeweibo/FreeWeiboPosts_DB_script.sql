@@ -17,3 +17,7 @@ hashtagsurls TEXT,
 time_scrapped DATETIME,
 PRIMARY KEY(Post_Id)
 );
+
+CREATE USER 'admin'@'localhost' IDENTIFIED BY 'freeweibo2021';
+
+GRANT ALL ON FreeWeiboPosts.Posts TO 'admin'@'localhost';
