@@ -1,6 +1,8 @@
-USE FreeWeiboPosts;
+CREATE DATABASE FreeWeibo;
 
-CREATE TABLE Posts (
+USE FreeWeibo;
+
+CREATE TABLE FreeWeiboPosts (
 Post_Id INT NOT NULL AUTO_INCREMENT,
 User_name VARCHAR(50),
 FreeWeibo_Post_Id TINYTEXT NOT NULL,
@@ -11,13 +13,12 @@ adult_keyword BOOLEAN,
 consored_keyword BOOLEAN,
 time_created DATETIME,
 OriginalPostLink TINYTEXT,
+HotTerm VARCHAR(255),
 content TEXT,
-hashtags TINYTEXT,
-hashtagsurls TEXT,
 time_scrapped DATETIME,
-PRIMARY KEY(Post_Id)
-);
+PRIMARY KEY(Post_Id)#,
+#CONSTRAINT fk_HotTerm FOREIGN KEY (HotTerm)
+#REFERENCES FreeWeiboHotSearch(Term)
+)ENGINE = InnoDB;
 
-CREATE USER 'admin'@'localhost' IDENTIFIED BY 'freeweibo2021';
 
-GRANT ALL ON FreeWeiboPosts.Posts TO 'admin'@'localhost';
