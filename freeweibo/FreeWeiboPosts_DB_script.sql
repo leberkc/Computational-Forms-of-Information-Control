@@ -5,7 +5,7 @@ USE FreeWeibo;
 CREATE TABLE FreeWeiboPosts (
 Post_Id INT NOT NULL AUTO_INCREMENT,
 User_name VARCHAR(50),
-FreeWeibo_Post_Id TINYTEXT NOT NULL,
+FreeWeibo_Post_Id VARCHAR(20) NOT NULL UNIQUE,
 repostscount MEDIUMINT,
 censored TINYINT,
 deleted TINYINT,
