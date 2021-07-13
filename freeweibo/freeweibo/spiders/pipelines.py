@@ -6,17 +6,11 @@
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
-from scrapy.exceptions import DropItem
 import mysql.connector
-
 
 class FreeweiboPipeline(object):
     def __init__(self):
         self.create_connection()
-        
-        self.curr.execute("SELECT FreeWeibo_Post_Id FROM FreeWeiboPosts")
-        unique_postId = self.curr.fetchall()
-        self.ids_seen = unique_postId
 
     def create_connection(self):
         self.conn = mysql.connector.connect(
@@ -28,13 +22,9 @@ class FreeweiboPipeline(object):
         self.curr = self.conn.cursor()
 
     def process_item(self, item, spider):
-
-        adapter = ItemAdapter(item)
-        if adapter['postid'] in self.ids_seen:
-            raise DropItem(f"Duplicate item found: {item!r}")
-        else:
-            self.store_post_db(item)
-            return item
+        
+        self.store_post_db(item)
+        return item
 
     def store_post_db(self, item):
         post_values =[
@@ -56,4 +46,5 @@ class FreeweiboPipeline(object):
             "INSERT INTO FreeWeiboPosts VALUES (NULL,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",post_values
             )
         self.conn.commit()
+
 
