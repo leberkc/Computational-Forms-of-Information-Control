@@ -1,0 +1,16 @@
+1) Python == 3.8.2
+2) Scrapy == 2.4.1
+		To install Scrapy using conda, run:
+			conda install -c conda-forge scrapy
+		Or Alternative:
+			pip install Scrapy
+
+3) MySQL == mysql  Ver 8.0.25 for macos11 on x86_64 (MySQL Community Server - GPL)
+		To install Download the package from,
+		'http://dev.mysql.com/downloads/shell/'
+
+4) MySQL Connector/Python == 8.0+
+		To install MySQL Connector Python, run:
+			pip install mysql-connector-python
+		If facing any problems, mention the module's version:
+			pip install mysql-connector-python==8.0.11
