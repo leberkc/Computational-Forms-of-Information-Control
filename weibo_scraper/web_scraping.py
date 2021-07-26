@@ -7,7 +7,7 @@ import time
 import sys
 import re
 import urllib
-from connections import mysql_database, phantomjs
+from connections import mysql_database, firefox
 from constants import element_selectors as select#, filter_words
 
 
