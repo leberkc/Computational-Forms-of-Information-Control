@@ -10,13 +10,14 @@ from scrapy import Selector
 
 
 class FreeWeiboSpider(scrapy.Spider):
-
+	#name of the spider and allowed urls
 	name = "freeweibo"
 	allowed_domains = ['freeweibo.com']
 	start_urls = ['https://freeweibo.com/']
-
+	
+	
 	def parse(self, response):
-		
+		#loop through the hot search keywords on freeweibo.com 
 		for hotsearchterm in response.xpath(".//div[@id='right']/ol/li/a/text()"):
 			term = hotsearchterm.extract()
 			yield scrapy.Request(
@@ -25,12 +26,13 @@ class FreeWeiboSpider(scrapy.Spider):
 				)
 
 	def parse_hotsearchterm(self, response):
-
+		#instantiate items to be sent to items.py
 		items = FreeweiboItem()
 		raw_json = response.body
 		jsonresponse = json.loads(response.body)
 		data = jsonresponse["messages"]
-
+		
+		#loop through all posts on freeweibo and scrap the desired information
 		for i in data.keys():
 			user_name = data[i]['user_name']
 			post_id = data[i]['id']
