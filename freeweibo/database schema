@@ -1,0 +1,6 @@
+The sql code to create the FreeWeiboPosts table has to be updated to ensure the columns can handle Chinese characters.  After running the sql code the following sql code should be run in phpmyadmin:
+
+ALTER TABLE FreeWeiboPosts MODIFY User_name VARCHAR(255) CHARACTER SET UTF8;
+ALTER TABLE FreeWeiboPosts MODIFY HotTerm VARCHAR(255) CHARACTER SET UTF8;
+ALTER TABLE FreeWeiboPosts MODIFY OriginalPostLink VARCHAR(255) CHARACTER SET UTF8;
+ALTER TABLE FreeWeiboPosts MODIFY content VARCHAR(255) CHARACTER SET UTF8;
