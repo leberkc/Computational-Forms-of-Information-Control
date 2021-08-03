@@ -3,7 +3,12 @@
 		To install Scrapy using conda, run:
 			conda install -c conda-forge scrapy
 		Or Alternative:
-			pip install Scrapy
+			pip3 install Scrapy
+
+Without sudo, pip3 installs into $HOME/.local/bin, $HOME/.local/lib, etc. Add the following line to your ~/.bashrc or ~/.profile (or the appropriate place for other shells):
+
+export PATH="${PATH}:${HOME}/.local/bin"
+then open a new terminal or reload .bashrc, and it should find the command.
 
 3) MySQL == mysql  Ver 8.0.25 for macos11 on x86_64 (MySQL Community Server - GPL)
 		To install Download the package from,
