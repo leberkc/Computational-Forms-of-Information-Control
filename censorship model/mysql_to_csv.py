@@ -4,7 +4,7 @@ try:
     mydb = connection.connect(host="localhost", database = 'FreeWeibo',user="root", passwd="xxxxxxx",use_pure=True)
     query = "Select * from FreeWeiboPosts;"
     result_dataFrame = pd.read_sql(query,mydb)
-    result_dataFrame.to_csv('freeweibo.raw.csv')
+    result_dataFrame.to_csv('freeweibo.mysql.csv')
     mydb.close() #close the connection
 except Exception as e:
     mydb.close()
