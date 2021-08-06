@@ -1,19 +1,24 @@
 #encoding=utf-8
 import csv
-import jieba
 import pandas as pd
-import jieba.posseg as pseg
+freeweibo_labeled = pd.read_csv('/home/leberkc/fastText/sandbox/freeweibo.mysql.csv')
+#freeweibo_labeled = freeweibo_labeled.dropna()  # drops all rows wehere nan appears in ANY column
+freeweibo_labeled = freeweibo_labeled[freeweibo_labeled['HotTerm'].notna()] #drops rows wif nan appears in teh HotTerm column
+freeweibo_raw_posts = freeweibo_labeled
+print(freeweibo_labeled)
 
 
-df1= pd.read_csv('/home/leberkc/fastText/sandbox/freeweibo.labeled.csv', sep='\t')
-#df1= pd.read_csv('/home/leberkc/fastText/sandbox/freeweibo.labeled.csv', sep='\t', error_bad_lines=False)
-#df2= pd.read_csv('/home/leberkc/fastText/sandbox/freeweibo.segmented.csv', sep='\t')
-df2= pd.read_csv('/home/leberkc/fastText/sandbox/freeweibo.clean.processed.csv', sep='\t')
+from io import StringIO
+col = ['row_id','Post_Id' ,'User_name','FreeWeibo_Post_Id','repostscount','censored','deleted','adult_keyword','censored_keyword','time_created','OriginalPostLink','HotTerm','content','time_scrapped']
+freeweibo_labeled = freeweibo_labeled[col]
+freeweibo_labeled = freeweibo_labeled[pd.notnull(freeweibo_labeled['content'])]
+freeweibo_labeled.columns = ['row_id','Post_Id' ,'User_name','FreeWeibo_Post_Id','repostscount','censored','deleted','adult_keyword','censored_keyword','time_created','OriginalPostLink','HotTerm','content','time_scrapped']
 
-#print(df1)
-#print(df2)
-#print(df1['HotTerm'])
-#print(df2['cleaned_content'])
+freeweibo_labeled['HotTerm']=['__label__'+str(s).replace(' or ', '$').replace(', or ','$').replace(',','$').replace(' ','_').replace(',','__label__').replace('$$','$').replace('$',' __label__').replace('___','__') for s in freeweibo_labeled['HotTerm']]
+freeweibo_labeled['HotTerm']
 
-df3 = pd.concat([df1['HotTerm'], df2['processed_content']], axis=1)
-df3.to_csv(r'/home/leberkc/fastText/sandbox/freeweibo.final.data.csv', index=False, sep='\t', quoting=csv.QUOTE_NONE, quotechar="", escapechar=" ")
+freeweibo_labeled['content']= freeweibo_labeled['content'].replace('\n',' ', regex=True).replace('\t',' ', regex=True)
+
+freeweibo_labeled.to_csv(r'/home/leberkc/fastText/sandbox/freeweibo.labeled.csv', index=False, sep='\t', quoting=csv.QUOTE_NONE, quotechar="", escapechar=" ")
+freeweibo_raw_posts.to_csv(r'/home/leberkc/fastText/sandbox/freeweibo.raw.csv', index=False, sep='\t', quoting=csv.QUOTE_NONE, quotechar="", escapechar=" ")
+#freeweibo_labeled.to_csv(r'/home/leberkc/fastText/sandbox/freeweibo.labeled.txt', index=False, sep=' ', header=False, quoting=csv.QUOTE_NONE, quotechar="", escapechar=" ")
