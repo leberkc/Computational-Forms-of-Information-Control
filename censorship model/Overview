@@ -1,0 +1,27 @@
+Using fasttext to classify censored content on freeweibo. Several different files extract and format the freeweibo content. Each python file can be run in the following order to examine different aspects of the formatting process
+
+mysql_to_csv.py --> freeweibo.raw.csv (need to manually edit freeweibo.raw.csv and add "row_id to the first line).
+create_labeled_csv.py --> freeweibo.labeled.csv (Labels the HotTerms. HotTerms are used to assign similar posts to the same HotTerm)
+create_segmented_content.py --> freeweibo.segmented.csv (Used to separate the Chinese post into individual words. Based on jieba)
+create_clean_content.py --> freeweibo.clean.content.csv (Removes all non Chinese characters from the post content)
+create_processed.py --> freeweibo.processed.csv (Contains dataframe of labels and cleaned posts. Posts are not segmented)
+create_processed_clean.py --> freeweibo.clean.processed.csv (Contains dataframe of labels, cleaned content and segmented content. Used to make sure cleaned and segmented contains the same chracters)
+7 create_final_data.py --> freeweibo.final.data.csv (Final dataframe that contains the HotTerm labels and the cleaned segmented content. Used for training the fasttext model)
+
+Train the model
+======================
+Example with 493 rows of data
+
+We have 493 rows of censored Weibo posts
+We take 80% (394) for to train the model and 20% (99) to test
+
+head -n 394 /home/leberkc/fastText/sandbox/freeweibo.final.data.csv > /home/leberkc/fastText/sandbox/freeweibo.train.csv
+tail -n 99 /home/leberkc/fastText/sandbox/freeweibo.final.data.csv > /home/leberkc/fastText/sandbox/freeweibo.test.csv
+
+Run the following command to create the training model
+======================================================
+./fasttext supervised -input /home/leberkc/fastText/sandbox/freeweibo.train.csv -output /home/leberkc/fastText/sandbox/model_freeweibo
+
+Test the model
+================
+./fasttext test /home/leberkc/fastText/sandbox/model_freeweibo.bin /home/leberkc/fastText/sandbox/freeweibo.test.csv
