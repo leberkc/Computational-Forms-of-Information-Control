@@ -1,8 +1,9 @@
 #encoding=utf-8
 import csv
 import pandas as pd
-freeweibo_labeled = pd.read_csv('/home/leberkc/fastText/sandbox/freeweibo.raw.csv')
+freeweibo_labeled = pd.read_csv('/home/leberkc/fastText/sandbox/freeweibo.mysql.csv')
 freeweibo_labeled = freeweibo_labeled.dropna()
+freeweibo_raw_posts = freeweibo_labeled
 print(freeweibo_labeled)
 
 
@@ -19,4 +20,6 @@ freeweibo_labeled['HotTerm']
 freeweibo_labeled['content']= freeweibo_labeled['content'].replace('\n',' ', regex=True).replace('\t',' ', regex=True)
 
 freeweibo_labeled.to_csv(r'/home/leberkc/fastText/sandbox/freeweibo.labeled.csv', index=False, sep='\t', quoting=csv.QUOTE_NONE, quotechar="", escapechar=" ")
+freeweibo_raw_posts.to_csv(r'/home/leberkc/fastText/sandbox/freeweibo.raw.csv', index=False, sep='\t', quoting=csv.QUOTE_NONE, quotechar="", escapechar=" ")
+
 #freeweibo_labeled.to_csv(r'/home/leberkc/fastText/sandbox/freeweibo.labeled.txt', index=False, sep=' ', header=False, quoting=csv.QUOTE_NONE, quotechar="", escapechar=" ")
