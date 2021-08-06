@@ -1,7 +1,7 @@
 Using fasttext to classify censored content on freeweibo. Several different files extract and format the freeweibo content. Each python file can be run in the following order to examine different aspects of the formatting process
 
-mysql_to_csv.py --> freeweibo.raw.csv (need to manually edit freeweibo.raw.csv and add "row_id to the first line).
-create_labeled_csv.py --> freeweibo.labeled.csv (Labels the HotTerms. HotTerms are used to assign similar posts to the same HotTerm)
+mysql_to_csv.py --> freeweibo.mysql.csv (need to manually edit freeweibo.mysql.csv and add "row_id to the first line).
+create_labeled_csv.py --> freeweibo.raw.csv (nan values removed) and freeweibo.labeled.csv (Labels the HotTerms. HotTerms are used to assign similar posts to the same HotTerm)
 create_segmented_content.py --> freeweibo.segmented.csv (Used to separate the Chinese post into individual words. Based on jieba)
 create_clean_content.py --> freeweibo.clean.content.csv (Removes all non Chinese characters from the post content)
 create_processed.py --> freeweibo.processed.csv (Contains dataframe of labels and cleaned posts. Posts are not segmented)
