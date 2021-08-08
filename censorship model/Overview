@@ -8,6 +8,7 @@ Using fasttext to classify censored content on freeweibo. Several different file
 STOP HERE and go to the "Train the model step below!  Files below are not needed for classifying the data, but provide different formatting/views of the data
 6. create_processed_clean.py --> freeweibo.clean.processed.csv (Contains dataframe of labels, cleaned content and segmented content. Used to make sure cleaned and segmented contains the same chracters)
 7. create_final_data.py --> freeweibo.final.data.csv (Final dataframe that contains the HotTerm labels and the cleaned segmented content. Used for training the fasttext model)
+8. create_final_data_segmented.py --> freeweibo.final.data.segmented.csv
 
 Train the model
 ======================
