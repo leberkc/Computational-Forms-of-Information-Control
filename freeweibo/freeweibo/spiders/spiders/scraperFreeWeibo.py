@@ -10,14 +10,13 @@ from scrapy import Selector
 
 
 class FreeWeiboSpider(scrapy.Spider):
-	#name of the spider and allowed urls
+
 	name = "freeweibo"
 	allowed_domains = ['freeweibo.com']
 	start_urls = ['https://freeweibo.com/']
-	
-	
+
 	def parse(self, response):
-		#loop through the hot search keywords on freeweibo.com 
+		
 		for hotsearchterm in response.xpath(".//div[@id='right']/ol/li/a/text()"):
 			term = hotsearchterm.extract()
 			yield scrapy.Request(
@@ -26,15 +25,15 @@ class FreeWeiboSpider(scrapy.Spider):
 				)
 
 	def parse_hotsearchterm(self, response):
-		#instantiate items to be sent to items.py
+
 		items = FreeweiboItem()
 		raw_json = response.body
 		jsonresponse = json.loads(response.body)
 		data = jsonresponse["messages"]
-		
-		#loop through all posts on freeweibo and scrap the desired information
+
 		for i in data.keys():
 			user_name = data[i]['user_name']
+			weibo_id_user = data[i]['user_id']
 			post_id = data[i]['id']
 			created = data[i]['created_at']
 			reposts_count = data[i]['reposts_count']
@@ -47,6 +46,7 @@ class FreeWeiboSpider(scrapy.Spider):
 			timestamp = datetime.datetime.now()
 
 			items['username'] = user_name
+			items['weibo_id_user'] = weibo_id_user
 			items['postid'] = post_id
 			items['repostscount'] = reposts_count
 			items['censored'] = censored
@@ -58,4 +58,6 @@ class FreeWeiboSpider(scrapy.Spider):
 			items['content'] = Selector(text=text).xpath("normalize-space()").get()
 			items['hotterm'] = Selector(text=text).xpath(".//span/text()").get()
 			items['timestampPostscrapped'] = timestamp
+			
 			yield items
+
