@@ -4,8 +4,6 @@ CREATE TABLE Weibo_User_data (
 weibo_user_id VARCHAR(20),
 screen_name VARCHAR(100),
 profile_url TINYTEXT,
-#verified_reason TINYTEXT,
-#u_description VARCHAR(255),
 gender char,
 followers_count INT,
 follow_count INT,
