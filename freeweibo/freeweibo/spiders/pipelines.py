@@ -15,20 +15,26 @@ class FreeweiboPipeline(object):
     def create_connection(self):
         self.conn = mysql.connector.connect(
             host = 'localhost',
-            user = 'root',
-            passwd = 'Itagui22388!',
+            user = 'admin',
+            passwd = 'freeweibo2021',
             database = 'FreeWeibo'
             )
         self.curr = self.conn.cursor()
 
     def process_item(self, item, spider):
         
-        self.store_post_db(item)
-        return item
+        if spider.name == 'freeweibo':
+            self.store_post_db(item)
+            return item
+
+        if spider.name == 'weibouser':
+            self.store_user_db(item)
+            return item
 
     def store_post_db(self, item):
         post_values =[
             item['username'], 
+            item['weibo_id_user'],
             item['postid'], 
             item['repostscount'], 
             item['censored'], 
@@ -43,8 +49,23 @@ class FreeweiboPipeline(object):
         ]
 
         self.curr.execute(
-            "INSERT INTO FreeWeiboPosts VALUES (NULL,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",post_values
+            "INSERT INTO FreeWeiboPosts VALUES (NULL,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",post_values
             )
         self.conn.commit()
 
+    def store_user_db(self, item):
+        user_values =[
+            item['weibo_user_id'],
+            item['screename'], 
+            item['profile_url'], 
+            item['gender'], 
+            item['followers_count'], 
+            item['follow_count'], 
+            item['timestamp'] 
+        ]
+
+        self.curr.execute(
+            "INSERT INTO Weibo_User_data VALUES (%s,%s,%s,%s,%s,%s,%s)",user_values
+            )
+        self.conn.commit()
 
