@@ -21,4 +21,14 @@ PRIMARY KEY(Post_Id)#,
 #REFERENCES FreeWeiboHotSearch(Term)
 )ENGINE = InnoDB;
 
+CREATE USER 'admin'@'localhost' IDENTIFIED BY 'freeweibo2021';
+
+GRANT ALL ON FreeWeibo.FreeWeiboPosts TO 'admin'@'localhost';
+
+#Add Column Containing Weibo users ID to current table
+ALTER TABLE FreeWeiboPosts
+ADD COLUMN weibo_id_user VARCHAR(100) AFTER User_name;
+
+ALTER TABLE `FreeWeibo`.`FreeWeiboPosts` 
+ADD INDEX `weibo_user` (`weibo_id_user` ASC) VISIBLE;
 
