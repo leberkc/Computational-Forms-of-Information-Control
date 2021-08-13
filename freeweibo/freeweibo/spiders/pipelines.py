@@ -31,6 +31,11 @@ class FreeweiboPipeline(object):
             self.store_user_db(item)
             return item
 
+        if spider.name == 'weiboTopicSearch':
+            self.store_user_db(item)
+            self.store_weibo_post_db(item)
+            return item
+
     def store_post_db(self, item):
         post_values =[
             item['username'], 
@@ -56,16 +61,52 @@ class FreeweiboPipeline(object):
     def store_user_db(self, item):
         user_values =[
             item['weibo_user_id'],
-            item['screename'], 
+            item['screename'],
             item['profile_url'], 
+            item['statuses_count'],  
+            item['verified'],
+            item['verified_type'],
+            item['verified_reason'],
+            item['close_blue_v'], 
+            item['u_description'], 
             item['gender'], 
-            item['followers_count'], 
-            item['follow_count'], 
-            item['timestamp'] 
+            item['mbtype'],
+            item['urank'], 
+            item['mbrank'], 
+            item['follow_me'],
+            item['following'],
+            item['followers_count'],
+            item['follow_count'],
+            item['origin'],
+            item['time_scrapped']
         ]
 
         self.curr.execute(
-            "INSERT INTO Weibo_User_data VALUES (%s,%s,%s,%s,%s,%s,%s)",user_values
-            )
+            """INSERT INTO Weibo_User_data 
+            VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+            ,user_values)
+        self.conn.commit()
+
+    def store_weibo_post_db(self, item):
+        post_values =[
+            item['hotterm'],
+            item['post_id'],
+            item['mid'],
+            item['created_at'], 
+            item['content'],
+            item['textLength'],  
+            item['source'],
+            item['favorited'],
+            item['weibo_user_id'],
+            item['reposts_count'],
+            item['comments_count'], 
+            item['attitudes_count'], 
+            item['time_scrapped']
+        ]
+
+        self.curr.execute(
+            """INSERT INTO Weibo_HotTerm_Topic_Post 
+            VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+            ,post_values)
         self.conn.commit()
 
