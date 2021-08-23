@@ -1,10 +1,8 @@
-CREATE DATABASE FreeWeibo;
-
 USE FreeWeibo;
 
 CREATE TABLE FreeWeiboPosts (
 Post_Id INT NOT NULL AUTO_INCREMENT,
-User_name VARCHAR(50),
+User_name VARCHAR(100),
 FreeWeibo_Post_Id VARCHAR(20) NOT NULL UNIQUE,
 repostscount MEDIUMINT,
 censored TINYINT,
@@ -16,10 +14,9 @@ OriginalPostLink TINYTEXT,
 HotTerm VARCHAR(255),
 content TEXT,
 time_scrapped DATETIME,
-PRIMARY KEY(Post_Id)#,
-#CONSTRAINT fk_HotTerm FOREIGN KEY (HotTerm)
-#REFERENCES FreeWeiboHotSearch(Term)
+PRIMARY KEY(Post_Id)
 )ENGINE = InnoDB;
+
 
 CREATE USER 'admin'@'localhost' IDENTIFIED BY 'freeweibo2021';
 
@@ -27,8 +24,20 @@ GRANT ALL ON FreeWeibo.FreeWeiboPosts TO 'admin'@'localhost';
 
 #Add Column Containing Weibo users ID to current table
 ALTER TABLE FreeWeiboPosts
-ADD COLUMN weibo_id_user VARCHAR(100) AFTER User_name;
+ADD COLUMN weibo_user_id VARCHAR(100) AFTER User_name;
 
 ALTER TABLE `FreeWeibo`.`FreeWeiboPosts` 
-ADD INDEX `weibo_user` (`weibo_id_user` ASC) VISIBLE;
+ADD INDEX `index3` (`weibo_user_id` ASC) VISIBLE;
+;
+
+ALTER TABLE `FreeWeibo`.`FreeWeiboPosts` 
+ADD INDEX `fk_freeweibo_hotterm_idx` (`HotTerm` ASC) VISIBLE;
+;
+ALTER TABLE `FreeWeibo`.`FreeWeiboPosts` 
+ADD CONSTRAINT `fk_freeweibo_hotterm`
+  FOREIGN KEY (`HotTerm`)
+  REFERENCES `FreeWeibo`.`HOTTERMS` (`HotTerm`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
 
