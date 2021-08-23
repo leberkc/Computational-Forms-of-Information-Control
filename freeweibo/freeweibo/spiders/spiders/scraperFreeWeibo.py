@@ -33,7 +33,7 @@ class FreeWeiboSpider(scrapy.Spider):
 
 		for i in data.keys():
 			user_name = data[i]['user_name']
-			weibo_id_user = data[i]['user_id']
+			weibo_user_id = data[i]['user_id']
 			post_id = data[i]['id']
 			created = data[i]['created_at']
 			reposts_count = data[i]['reposts_count']
@@ -46,7 +46,7 @@ class FreeWeiboSpider(scrapy.Spider):
 			timestamp = datetime.datetime.now()
 
 			items['username'] = user_name
-			items['weibo_id_user'] = weibo_id_user
+			items['weibo_user_id'] = weibo_user_id
 			items['postid'] = post_id
 			items['repostscount'] = reposts_count
 			items['censored'] = censored
@@ -60,4 +60,3 @@ class FreeWeiboSpider(scrapy.Spider):
 			items['timestampPostscrapped'] = timestamp
 			
 			yield items
-
