@@ -31,7 +31,7 @@ The scraper will use the hot search terms collected from FreeWeibo and search We
 First thing to do will be to create a project.
 
 ```
-> scrapy startproject freeweibo
+scrapy startproject freeweibo
 ```
 
 Scrapy project will have the following file structure.
@@ -783,18 +783,47 @@ ITEM_PIPELINES = {
 ## Run Scrapy Spiders
 * First go to project directory.
 ```
-> cd freeweibo
+cd freeweibo
 ```
 * Run the first spider
 ```
-> scrapy crawl freeweibo
+scrapy crawl freeweibo
 ```
 * Run the second spider
 ```
-> scrapy crawl freeweibouser
+scrapy crawl freeweibouser
 ```
 * Run the third spider
 ```
-> scrapy crawl weiboTopicSearch
+scrapy crawl weiboTopicSearch
 ```
 * Check database to see all the information scrapped saved in the database. 
+
+## Using Bash Script
+* Scrapy can only run one spider at a time. 
+* To continually use the spiders to collect data using a cron job, it can be done by using the following bash script.
+```bash
+#!/bin/bash
+
+cd /myfolder/freeweibo
+PATH=$PATH:/usr/local/bin
+export PATH
+scrapy crawl freeweibo
+wait
+scrapy crawl weiboTopicSearch
+wait
+scrapy crawl freeweibouser
+```
+* Location of where scrapy is installed can be found by the following command
+```
+where scrapy
+```
+* Copy and paste that path to $PATH:{paste outcome here}
+* Make the bash script executable
+```
+chmod +x filename.sh
+```
+* Run script
+```
+./filename.sh
+```
