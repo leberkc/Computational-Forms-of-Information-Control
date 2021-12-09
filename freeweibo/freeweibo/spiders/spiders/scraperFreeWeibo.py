@@ -21,13 +21,14 @@ class FreeWeiboSpider(scrapy.Spider):
 			term = hotsearchterm.extract()
 			yield scrapy.Request(
 				f'https://freeweibo.com/get-from-cache.php?q={term}',
-				callback = self.parse_hotsearchterm
+				callback = self.parse_hotsearchterm, meta={'hotterm': term}
 				)
 
 	def parse_hotsearchterm(self, response):
 
 		items = FreeweiboItem()
 		raw_json = response.body
+		hotterm = response.meta.get('hotterm')
 		jsonresponse = json.loads(response.body)
 		data = jsonresponse["messages"]
 
@@ -56,7 +57,8 @@ class FreeWeiboSpider(scrapy.Spider):
 			items['time_created'] = time_created
 			items['freeweiboOGpostlink'] = Selector(text=created).xpath(".//a/@href").get()
 			items['content'] = Selector(text=text).xpath("normalize-space()").get()
-			items['hotterm'] = Selector(text=text).xpath(".//span/text()").get()
+			#items['hotterm'] = Selector(text=text).xpath(".//span/text()").get()
+			items['hotterm'] = hotterm
 			items['timestampPostscrapped'] = timestamp
 			
 			yield items
