@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" href="style.css">
+<script src="calcprop.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=APIKEY&callback=initMap&v=weekly"defer></script>
+<div class="widget">
+  <ol class="widget-list" id="political">
+    <div class="text_body">
+      <a class="widget-list-link">
+      <div class="polistat" id="polistats"></div>
+      </a>
+    </div>
+  </ol>
+  <ol class="widget-list" id="geolocation">
+    <div class="map_body">
+      <a class="widget-list-link">
+        <div id="map"></div>
+      </a>
+    </div>
+    <div style = "width:200px; height:50px;">
+      
+      
+      
+      
+      <a class="widget-list-link">
+
+
+
+
+
+
+        <div id="city"></div>
+
+
+
+      </a>
+
+
+
+
+    </div>
+  </ol>
+
+  <ol class="widget-list" id="propscore">
+    <div class="text_body">
+      <a class="widget-list-link">
+      <div id="gr"class="gr"></div>
+      <div id="kh"class="kh"></div>
+      <div id="or"class="or"></div>
+      <div id="re"class="re"></div>
+      <div id="na"class="na"></div>
+      <p></p>
+      <div id="Low"></div>
+      <div id="Caution"></div>
+      <div id="Elevated"></div>
+      <div id="High"></div>
+      <p></p>
+      <div class="caution" id="caution_info"></div>
+      </a>
+    </div>
+  </ol>
+
+  <ul class="widget-tabs">
+    <li class="widget-tab">
+      <a href="#political" class="widget-tab-link">Polistats</a>
+    <li class="widget-tab">
+      <a href="#geolocation" class="widget-tab-link">Geolocation</a>
+    <li class="widget-tab">
+      <a href="#propscore" class="widget-tab-link">PropScore</a>
+  </ul>
+</div>
+<!--Tab Interface (html/css) based off the tabbed widget from https://speckyboy.com/10-simple-code-snippets-creating-beautiful-tabs/-->
+</html>

@@ -1,0 +1,28 @@
+{
+    "name": "Propaganda Rating Tool",
+    "version": "1.0",
+    "manifest_version": 2,
+    "icons": {
+  "128": "PT.png"
+   },
+    "description":"The PropTool is designed provide you insight of what your fellow users consume based off a propaganda score, this extension also provides you with your geolocation and determines your political demographics",
+    "background": {
+      "scripts": [
+         "calcprop.js"
+      ]
+   },
+    "browser_action": {
+      "default_popup": "ptpopup.html",
+      "default_title": "PropTool"
+},
+
+    "content_security_policy": "script-src 'self' https://maps.googleapis.com/ https://maps.gstatic.com; object-src 'self'",
+    "permissions": [
+      "http://*/",
+      "https://maps.google.com/*",
+      "https://maps.googleapis.com/*",
+      "http://localhost/*",
+      "geolocation"
+
+    ]
+  }
